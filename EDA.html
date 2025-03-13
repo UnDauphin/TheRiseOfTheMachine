@@ -382,19 +382,36 @@ document.write(`
 <p>Para conseguir los datos lo sacamos de la base de datos de ucirepo, por lo que primero instalamos la libreria para extraerlos</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="o">!</span>pip3<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>ucimlrepo<span class="w"> </span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">!</span>pip3<span class="w"> </span>install<span class="w"> </span>-U<span class="w"> </span>ucimlrepo<span class="w"> </span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">get_ipython</span><span class="p">()</span><span class="o">.</span><span class="n">system</span><span class="p">(</span><span class="s1">&#39;pip3 install -U ucimlrepo&#39;</span><span class="p">)</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;tensorflow&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>^C
+Collecting ucimlrepo
+  Using cached ucimlrepo-0.0.7-py3-none-any.whl.metadata (5.5 kB)
+Collecting pandas&gt;=1.0.0 (from ucimlrepo)
+  Downloading pandas-2.2.3-cp312-cp312-win_amd64.whl.metadata (19 kB)
+Requirement already satisfied: certifi&gt;=2020.12.5 in d:\miniconda\lib\site-packages (from ucimlrepo) (2025.1.31)
+Collecting numpy&gt;=1.26.0 (from pandas&gt;=1.0.0-&gt;ucimlrepo)
+  Downloading numpy-2.2.3-cp312-cp312-win_amd64.whl.metadata (60 kB)
+Requirement already satisfied: python-dateutil&gt;=2.8.2 in d:\miniconda\lib\site-packages (from pandas&gt;=1.0.0-&gt;ucimlrepo) (2.9.0.post0)
+Requirement already satisfied: pytz&gt;=2020.1 in d:\miniconda\lib\site-packages (from pandas&gt;=1.0.0-&gt;ucimlrepo) (2025.1)
+Collecting tzdata&gt;=2022.7 (from pandas&gt;=1.0.0-&gt;ucimlrepo)
+  Downloading tzdata-2025.1-py2.py3-none-any.whl.metadata (1.4 kB)
+Requirement already satisfied: six&gt;=1.5 in d:\miniconda\lib\site-packages (from python-dateutil&gt;=2.8.2-&gt;pandas&gt;=1.0.0-&gt;ucimlrepo) (1.17.0)
+Using cached ucimlrepo-0.0.7-py3-none-any.whl (8.0 kB)
+Downloading pandas-2.2.3-cp312-cp312-win_amd64.whl (11.5 MB)
+   ---------------------------------------- 0.0/11.5 MB ? eta -:--:--
+   ----------------------- ---------------- 6.8/11.5 MB 34.9 MB/s eta 0:00:01
+   ------------------------------------ --- 10.5/11.5 MB 26.1 MB/s eta 0:00:01
+   ---------------------------------------- 11.5/11.5 MB 25.7 MB/s eta 0:00:00
+Downloading numpy-2.2.3-cp312-cp312-win_amd64.whl (12.6 MB)
+   ---------------------------------------- 0.0/12.6 MB ? eta -:--:--
+   ----------------- ---------------------- 5.5/12.6 MB 25.8 MB/s eta 0:00:01
+   ---------------------------------------- 12.6/12.6 MB 34.4 MB/s eta 0:00:00
+Downloading tzdata-2025.1-py2.py3-none-any.whl (346 kB)
+Installing collected packages: tzdata, numpy, pandas, ucimlrepo
 </pre></div>
 </div>
 </div>
@@ -413,7 +430,7 @@ document.write(`
 </div>
 </div>
 </div>
-<p>Luego empezamos importamos las librerias a usr en el EDA</p>
+<p>Luego empezamos importamos las librerias a usar en el EDA</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
