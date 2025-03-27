@@ -57,9 +57,12 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'Balanceo';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Aplicacion modelos" href="Modelos.html" />
     <link rel="prev" title="Analisis exploratorio de Datos(EDA)" href="EDA.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
@@ -181,6 +184,7 @@
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="EDA.html">Analisis exploratorio de Datos(EDA)</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Balanceo del dataset</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Modelos.html">Aplicacion modelos</a></li>
 </ul>
 
     </div>
@@ -378,9 +382,7 @@ document.write(`
                 <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tecnica-de-sobremuestreo-sintetico-de-minorias-smote">Técnica de sobremuestreo sintético de minorías(SMOTE)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adasyn-metodo-de-muestreo-sintetico-adaptativo">ADASYN: método de muestreo sintético adaptativo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesiano">Bayesiano</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arbol-de-decision">Arbol de decision</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest">Random Forest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-weight-balanced">Train weight = balanced</a></li>
 </ul>
             </nav>
         </div>
@@ -445,10 +447,17 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X</span><span class="o">.</span><span class="n">drop</span><span class="p">([</span><span class="s2">&quot;Hillshade_9am&quot;</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Tabla de frecuencias de los covertypes</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">set_style</span><span class="p">(</span><span class="s2">&quot;whitegrid&quot;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Count of covertypes&#39;</span><span class="p">)</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">Cover_Type</span><span class="p">)</span>
+<span class="n">sns</span><span class="o">.</span><span class="n">countplot</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="o">.</span><span class="n">Cover_Type</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Covertype&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Frequency&#39;</span><span class="p">)</span>
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
@@ -459,40 +468,10 @@ document.write(`
 <img alt="_images/1e2d099e972dc3266fc5aec1f786cbbf13edbd3b5fb8b4f68f8c7aab5d9ba654.png" src="_images/1e2d099e972dc3266fc5aec1f786cbbf13edbd3b5fb8b4f68f8c7aab5d9ba654.png" />
 </div>
 </div>
-<p>A la luz del desbalanceo que tenemos en el covertype, donde los covertype 1 y 2 tienen una frecuencia mucho mas alta que las otras clases, vamos a aplicar metodos de desbalanceo para poder trabajar nuestros modelos de Machine Learning</p>
-<section id="tecnica-de-sobremuestreo-sintetico-de-minorias-smote">
-<h2>Técnica de sobremuestreo sintético de minorías(SMOTE)<a class="headerlink" href="#tecnica-de-sobremuestreo-sintetico-de-minorias-smote" title="Link to this heading">#</a></h2>
-<p>La técnica de sobremuestreo sintético de minorías (SMOTE) es un potente método utilizado para tratar el desequilibrio de clases en los conjuntos de datos. SMOTE resuelve este problema generando muestras de clases minoritarias para equilibrar la distribución de clases. SMOTE funciona generando ejemplos sintéticos en el espacio de características de la clase minoritaria.
-Procedimiento de trabajo de SMOTE:
-Identificación de ejemplos de clases minoritarias: SMOTE funciona en conjuntos de datos en los que una o más clases están significativamente infrarrepresentadas en comparación con otras. El primer paso consiste en identificar la clase o clases minoritarias en el conjunto de datos.
-Selección del vecino más próximo: Para cada clase minoritaria, SMOTE identifica sus k vecinos más cercanos en el espacio de características. El número de vecinos más próximos, denominado k, es un parámetro especificado por el usuario.
-Generación de muestras sintéticas: Para cada instancia de clase minoritaria, SMOTE selecciona aleatoriamente uno de sus k vecinos más cercanos. A continuación, genera muestras sintéticas a lo largo del segmento de línea que une el caso de clase minoritaria y el vecino más próximo seleccionado en el espacio de características.
-Sobremuestreo controlado: La cantidad de sobremuestreo se controla mediante un parámetro denominado proporción de sobremuestreo, que especifica la proporción deseada de muestras sintéticas con respecto a las muestras reales de la clase minoritaria. Por defecto, SMOTE intenta equilibrar la distribución de clases generando muestras sintéticas hasta que la clase minoritaria alcanza el mismo tamaño que la clase mayoritaria.
-Repetir para todas las clases minoritarias C</p>
-</section>
-<section id="adasyn-metodo-de-muestreo-sintetico-adaptativo">
-<h2>ADASYN: método de muestreo sintético adaptativo<a class="headerlink" href="#adasyn-metodo-de-muestreo-sintetico-adaptativo" title="Link to this heading">#</a></h2>
-<p>ADASYN, una extensión de la técnica SMOTE, también se utiliza para tratar conjuntos de datos desequilibrados. ADASYN se centra en las densidades locales de las clases minoritarias. Averigua las regiones en las que el desequilibrio es muy grave y aplica la estrategia para generar muestras sintéticas en ellas. Genera más muestras donde la densidad es alta y menos muestras donde la densidad es baja. Este enfoque es muy útil en situaciones en las que la distribución de clases varía en el espacio de características.
-Procedimiento de trabajo de ADASYN</p>
-<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>Ratios de desequilibrio de clases: El paso inicial de ADASYN es calcular el ratio de clase minoritaria que se obtiene dividiendo el número de muestras de clase mayoritaria por el número de muestras de clase minoritaria.
-Hallar la distribución de densidad: Para cada instancia minoritaria, encontramos sus k vecinos más cercanos. A continuación, hallamos la distancia entre ellos utilizando métricas como la distancia Manhattan o la distancia euclidiana. Si las instancias están rodeadas por más vecinos cercanos, consideramos que la densidad es más alta; de lo contrario, la densidad se considera baja.
-Ratio de generación de muestras: Una vez calculados el ratio de desequilibrio de clases y la distribución de la densidad, calculamos el ratio de generación de muestras. Averigua cuántas muestras deben generarse para cada caso de clase minoritaria. Para densidades más altas e instancias desequilibradas más grandes, se generan más muestras sintéticas.
-Generación de muestras sintéticas: Combinando las instancias minoritarias con sus vecinos más cercanos, se generan nuevas muestras.
-Creación de conjuntos de datos equilibrados: Al combinar las nuevas muestras sintéticas con las instancias minoritarias originales, aumenta la frecuencia de las clases minoritarias. Esto equilibra el conjunto de datos y ayuda al modelo a aprender con mayor precisión.
-</pre></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
-<span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">ADASYN</span>
-</pre></div>
-</div>
-</div>
-</div>
+<p>A la luz del desbalanceo que tenemos en el covertype, donde los covertype 1 y 2 tienen una frecuencia mucho mas alta que las otras clases, vamos a aplicar metodos de balanceo para poder trabajar nuestros modelos de Machine Learning</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.model_selection</span> <span class="kn">import</span> <span class="n">train_test_split</span>
-<span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">RandomForestClassifier</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">classification_report</span>
 </pre></div>
 </div>
@@ -502,6 +481,39 @@ Creación de conjuntos de datos equilibrados: Al combinar las nuevas muestras si
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Dividir datos</span>
 <span class="n">X_train</span><span class="p">,</span> <span class="n">X_test</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+<span class="n">y_train</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cover_Type
+2             226801
+1             169283
+3              28633
+7              16495
+6              13878
+5               7498
+4               2221
+dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<section id="tecnica-de-sobremuestreo-sintetico-de-minorias-smote">
+<h2>Técnica de sobremuestreo sintético de minorías(SMOTE)<a class="headerlink" href="#tecnica-de-sobremuestreo-sintetico-de-minorias-smote" title="Link to this heading">#</a></h2>
+<p>La técnica de sobremuestreo sintético de minorías (SMOTE) es un potente método utilizado para tratar el desequilibrio de clases en los conjuntos de datos. SMOTE resuelve este problema generando muestras de clases minoritarias para equilibrar la distribución de clases. SMOTE funciona generando ejemplos sintéticos en el espacio de características de la clase minoritaria.
+Procedimiento de trabajo de SMOTE:</p>
+<ol class="arabic simple">
+<li><p>Identificación de ejemplos de clases minoritarias: SMOTE funciona en conjuntos de datos en los que una o más clases están significativamente infrarrepresentadas en comparación con otras. El primer paso consiste en identificar la clase o clases minoritarias en el conjunto de datos.</p></li>
+<li><p>Selección del vecino más próximo: Para cada clase minoritaria, SMOTE identifica sus k vecinos más cercanos en el espacio de características. El número de vecinos más próximos, denominado k, es un parámetro especificado por el usuario.</p></li>
+<li><p>Generación de muestras sintéticas: Para cada instancia de clase minoritaria, SMOTE selecciona aleatoriamente uno de sus k vecinos más cercanos. A continuación, genera muestras sintéticas a lo largo del segmento de línea que une el caso de clase minoritaria y el vecino más próximo seleccionado en el espacio de características.</p></li>
+<li><p>Sobremuestreo controlado: La cantidad de sobremuestreo se controla mediante un parámetro denominado proporción de sobremuestreo, que especifica la proporción deseada de muestras sintéticas con respecto a las muestras reales de la clase minoritaria. Por defecto, SMOTE intenta equilibrar la distribución de clases generando muestras sintéticas hasta que la clase minoritaria alcanza el mismo tamaño que la clase mayoritaria.</p></li>
+<li><p>Repetir para todos los casos de clases minoritarias: Los pasos 2-4 se repiten para todas las instancias de clase minoritaria en el conjunto de datos, generando muestras sintéticas para aumentar la clase minoritaria.</p></li>
+<li><p>Crear conjunto de datos equilibrado: Tras generar muestras sintéticas para la clase minoritaria, el conjunto de datos resultante es más equilibrado, con una distribución más equitativa de los casos entre las clases.</p></li>
+</ol>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">SMOTE</span>
 </pre></div>
 </div>
 </div>
@@ -514,139 +526,6 @@ Creación de conjuntos de datos equilibrados: Al combinar las nuevas muestras si
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_8636/3385486543.py in &lt;module&gt;
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="c1"># Aplicar SMOTE</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">smote</span> <span class="o">=</span> <span class="n">SMOTE</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">X_train_res</span><span class="p">,</span> <span class="n">y_train_res</span> <span class="o">=</span> <span class="n">smote</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\imblearn\base.py</span> in <span class="ni">fit_resample</span><span class="nt">(self, X, y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">206</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="g g-Whitespace">    </span><span class="mi">207</span><span class="s2">         self._validate_params()</span>
-<span class="ne">--&gt; </span><span class="mi">208</span><span class="s2">         return super().fit_resample(X, y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">209</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">210</span><span class="s2">     def _more_tags(self):</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\imblearn\base.py</span> in <span class="ni">fit_resample</span><span class="nt">(self, X, y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">110</span><span class="s2">         )</span>
-<span class="g g-Whitespace">    </span><span class="mi">111</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">112</span><span class="s2">         output = self._fit_resample(X, y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">113</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">114</span><span class="s2">         y_ = (</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\imblearn\over_sampling\_smote\base.py</span> in <span class="ni">_fit_resample</span><span class="nt">(self, X, y)</span>
-<span class="g g-Whitespace">    </span><span class="mi">387</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">388</span><span class="s2">             self.nn_k_.fit(X_class)</span>
-<span class="ne">--&gt; </span><span class="mi">389</span><span class="s2">             nns = self.nn_k_.kneighbors(X_class, return_distance=False)[:, 1:]</span>
-<span class="g g-Whitespace">    </span><span class="mi">390</span><span class="s2">             X_new, y_new = self._make_samples(</span>
-<span class="g g-Whitespace">    </span><span class="mi">391</span><span class="s2">                 X_class, y.dtype, class_sample, X_class, nns, n_samples, 1.0</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\neighbors\_base.py</span> in <span class="ni">kneighbors</span><span class="nt">(self, X, n_neighbors, return_distance)</span>
-<span class="g g-Whitespace">    </span><span class="mi">750</span><span class="s2">                 kwds = self.effective_metric_params_</span>
-<span class="g g-Whitespace">    </span><span class="mi">751</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">752</span><span class="s2">             chunked_results = list(</span>
-<span class="g g-Whitespace">    </span><span class="mi">753</span><span class="s2">                 pairwise_distances_chunked(</span>
-<span class="g g-Whitespace">    </span><span class="mi">754</span><span class="s2">                     X,</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">pairwise_distances_chunked</span><span class="nt">(X, Y, reduce_func, metric, n_jobs, working_memory, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1715</span><span class="s2">         else:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1716</span><span class="s2">             X_chunk = X[sl]</span>
-<span class="ne">-&gt; </span><span class="mi">1717</span><span class="s2">         D_chunk = pairwise_distances(X_chunk, Y, metric=metric, n_jobs=n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1718</span><span class="s2">         if (X is Y or Y is None) and PAIRWISE_DISTANCE_FUNCTIONS.get(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1719</span><span class="s2">             metric, None</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">pairwise_distances</span><span class="nt">(X, Y, metric, n_jobs, force_all_finite, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1887</span><span class="s2">         func = partial(distance.cdist, metric=metric, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1888</span><span class="s2"> </span>
-<span class="ne">-&gt; </span><span class="mi">1889</span><span class="s2">     return _parallel_pairwise(X, Y, func, n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1890</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1891</span><span class="s2"> </span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">_parallel_pairwise</span><span class="nt">(X, Y, func, n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1428</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1429</span><span class="s2">     if effective_n_jobs(n_jobs) == 1:</span>
-<span class="ne">-&gt; </span><span class="mi">1430</span><span class="s2">         return func(X, Y, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1431</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1432</span><span class="s2">     # enforce a threading backend to prevent data communication overhead</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">euclidean_distances</span><span class="nt">(X, Y, Y_norm_squared, squared, X_norm_squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">328</span><span class="s2">             )</span>
-<span class="g g-Whitespace">    </span><span class="mi">329</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">330</span><span class="s2">     return _euclidean_distances(X, Y, X_norm_squared, Y_norm_squared, squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">331</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">332</span><span class="s2"> </span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">_euclidean_distances</span><span class="nt">(X, Y, X_norm_squared, Y_norm_squared, squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span><span class="s2">         distances += XX</span>
-<span class="g g-Whitespace">    </span><span class="mi">373</span><span class="s2">         distances += YY</span>
-<span class="ne">--&gt; </span><span class="mi">374</span><span class="s2">     np.maximum(distances, 0, out=distances)</span>
-<span class="g g-Whitespace">    </span><span class="mi">375</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">376</span><span class="s2">     # Ensure that distances between vectors and themselves are set to 0.0.</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Applying ADASYN</span>
-<span class="n">adasyn</span> <span class="o">=</span> <span class="n">ADASYN</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">)</span>
-<span class="n">X_train_ADA</span><span class="p">,</span> <span class="n">y_train_ADA</span> <span class="o">=</span> <span class="n">adasyn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="c1"># Count outcome values after applying ADASYN</span>
-<span class="n">y_train_ADA</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cover_Type
-5             227081
-6             226948
-4             226836
-2             226801
-7             226673
-1             225805
-3             225453
-dtype: int64
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_train</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_8636/2314264361.py in &lt;module&gt;
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">y_train</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-
-<span class="ne">NameError</span>: name &#39;y_train&#39; is not defined
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_8636/1579705575.py in &lt;module&gt;
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">y</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-
-<span class="ne">NameError</span>: name &#39;y&#39; is not defined
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -655,619 +534,91 @@ dtype: int64
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_8636/2385144884.py in &lt;module&gt;
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">y_train_res</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
-
-<span class="ne">NameError</span>: name &#39;y_train_res&#39; is not defined
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cover_Type
+1             226801
+2             226801
+3             226801
+4             226801
+5             226801
+6             226801
+7             226801
+dtype: int64
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Entrenar modelo</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">11</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on training set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="c1"># Evaluar</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy on training set: 0.998
-Accuracy on test set: 0.945
-CPU Time: 11.46875 segundos
-              precision    recall  f1-score   support
-
-           1       0.95      0.93      0.94     42557
-           2       0.94      0.96      0.95     56500
-           3       0.93      0.96      0.94      7121
-           4       0.90      0.83      0.86       526
-           5       0.92      0.75      0.83      1995
-           6       0.92      0.86      0.89      3489
-           7       0.97      0.94      0.95      4015
-
-    accuracy                           0.94    116203
-   macro avg       0.93      0.89      0.91    116203
-weighted avg       0.94      0.94      0.94    116203
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Entrenar modelo</span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_res</span><span class="p">,</span> <span class="n">y_train_res</span><span class="p">)</span>
-
-<span class="c1"># Evaluar</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_7620/1867543609.py:3: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
-  model.fit(X_train_res, y_train_res)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
-
-           1       0.65      0.52      0.58     42557
-           2       0.80      0.40      0.54     56500
-           3       0.72      0.53      0.61      7121
-           4       0.21      0.94      0.34       526
-           5       0.06      0.82      0.12      1995
-           6       0.36      0.64      0.46      3489
-           7       0.25      0.92      0.40      4015
-
-    accuracy                           0.49    116203
-   macro avg       0.44      0.68      0.43    116203
-weighted avg       0.69      0.49      0.54    116203
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Entrenar modelo </span>
-<span class="n">model</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">5</span><span class="p">)</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_ADA</span><span class="p">,</span> <span class="n">y_train_ADA</span><span class="p">)</span>
-
-<span class="c1"># Evaluar</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>C:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_7620/1705256680.py:3: DataConversionWarning: A column-vector y was passed when a 1d array was expected. Please change the shape of y to (n_samples,), for example using ravel().
-  model.fit(X_train_ADA, y_train_ADA)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>              precision    recall  f1-score   support
-
-           1       0.67      0.40      0.50     42557
-           2       0.78      0.43      0.56     56500
-           3       0.62      0.82      0.71      7121
-           4       0.37      0.59      0.46       526
-           5       0.07      0.83      0.12      1995
-           6       0.30      0.30      0.30      3489
-           7       0.20      0.98      0.33      4015
-
-    accuracy                           0.47    116203
-   macro avg       0.43      0.62      0.42    116203
-weighted avg       0.68      0.47      0.52    116203
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.neighbors</span> <span class="kn">import</span> <span class="n">KNeighborsClassifier</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-
-<span class="c1"># Código a medir</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_8636/3648046291.py in &lt;module&gt;
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="c1"># Código a medir</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\neighbors\_classification.py</span> in <span class="ni">predict</span><span class="nt">(self, X)</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>             <span class="n">Class</span> <span class="n">labels</span> <span class="k">for</span> <span class="n">each</span> <span class="n">data</span> <span class="n">sample</span><span class="o">.</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">214</span><span class="s2">         neigh_dist, neigh_ind = self.kneighbors(X)</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span><span class="s2">         classes_ = self.classes_</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span><span class="s2">         _y = self._y</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\neighbors\_base.py</span> in <span class="ni">kneighbors</span><span class="nt">(self, X, n_neighbors, return_distance)</span>
-<span class="g g-Whitespace">    </span><span class="mi">750</span><span class="s2">                 kwds = self.effective_metric_params_</span>
-<span class="g g-Whitespace">    </span><span class="mi">751</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">752</span><span class="s2">             chunked_results = list(</span>
-<span class="g g-Whitespace">    </span><span class="mi">753</span><span class="s2">                 pairwise_distances_chunked(</span>
-<span class="g g-Whitespace">    </span><span class="mi">754</span><span class="s2">                     X,</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">pairwise_distances_chunked</span><span class="nt">(X, Y, reduce_func, metric, n_jobs, working_memory, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1715</span><span class="s2">         else:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1716</span><span class="s2">             X_chunk = X[sl]</span>
-<span class="ne">-&gt; </span><span class="mi">1717</span><span class="s2">         D_chunk = pairwise_distances(X_chunk, Y, metric=metric, n_jobs=n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1718</span><span class="s2">         if (X is Y or Y is None) and PAIRWISE_DISTANCE_FUNCTIONS.get(</span>
-<span class="g g-Whitespace">   </span><span class="mi">1719</span><span class="s2">             metric, None</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">pairwise_distances</span><span class="nt">(X, Y, metric, n_jobs, force_all_finite, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1887</span><span class="s2">         func = partial(distance.cdist, metric=metric, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1888</span><span class="s2"> </span>
-<span class="ne">-&gt; </span><span class="mi">1889</span><span class="s2">     return _parallel_pairwise(X, Y, func, n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1890</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1891</span><span class="s2"> </span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">_parallel_pairwise</span><span class="nt">(X, Y, func, n_jobs, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1428</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1429</span><span class="s2">     if effective_n_jobs(n_jobs) == 1:</span>
-<span class="ne">-&gt; </span><span class="mi">1430</span><span class="s2">         return func(X, Y, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1431</span><span class="s2"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1432</span><span class="s2">     # enforce a threading backend to prevent data communication overhead</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">euclidean_distances</span><span class="nt">(X, Y, Y_norm_squared, squared, X_norm_squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">328</span><span class="s2">             )</span>
-<span class="g g-Whitespace">    </span><span class="mi">329</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">330</span><span class="s2">     return _euclidean_distances(X, Y, X_norm_squared, Y_norm_squared, squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">331</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">332</span><span class="s2"> </span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">_euclidean_distances</span><span class="nt">(X, Y, X_norm_squared, Y_norm_squared, squared)</span>
-<span class="g g-Whitespace">    </span><span class="mi">372</span><span class="s2">         distances += XX</span>
-<span class="g g-Whitespace">    </span><span class="mi">373</span><span class="s2">         distances += YY</span>
-<span class="ne">--&gt; </span><span class="mi">374</span><span class="s2">     np.maximum(distances, 0, out=distances)</span>
-<span class="g g-Whitespace">    </span><span class="mi">375</span><span class="s2"> </span>
-<span class="g g-Whitespace">    </span><span class="mi">376</span><span class="s2">     # Ensure that distances between vectors and themselves are set to 0.0.</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="p">:</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>1
-2
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">training_accuracy</span> <span class="o">=</span> <span class="p">[]</span>
-<span class="n">test_accuracy</span> <span class="o">=</span> <span class="p">[]</span>
-
-<span class="n">neighbors_settings</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">neighbors_settings</span><span class="p">:</span>
-    <span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
-    <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-    <span class="n">training_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
-    <span class="n">test_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">-NN hecho&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_8636/1078269697.py in &lt;module&gt;
-<span class="g g-Whitespace">      </span><span class="mi">6</span>     <span class="n">clf</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="n">i</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">7</span>     <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="ne">----&gt; </span><span class="mi">8</span>     <span class="n">training_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
-<span class="g g-Whitespace">      </span><span class="mi">9</span>     <span class="n">test_accuracy</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">))</span>
-<span class="g g-Whitespace">     </span><span class="mi">10</span>     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Modelo </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">-NN hecho&quot;</span><span class="p">)</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\base.py</span> in <span class="ni">score</span><span class="nt">(self, X, y, sample_weight)</span>
-<span class="g g-Whitespace">    </span><span class="mi">649</span>         <span class="kn">from</span> <span class="nn">.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span>
-<span class="g g-Whitespace">    </span><span class="mi">650</span> 
-<span class="ne">--&gt; </span><span class="mi">651</span>         <span class="k">return</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
-<span class="g g-Whitespace">    </span><span class="mi">652</span> 
-<span class="g g-Whitespace">    </span><span class="mi">653</span>     <span class="k">def</span> <span class="nf">_more_tags</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\neighbors\_classification.py</span> in <span class="ni">predict</span><span class="nt">(self, X)</span>
-<span class="g g-Whitespace">    </span><span class="mi">212</span>             <span class="n">Class</span> <span class="n">labels</span> <span class="k">for</span> <span class="n">each</span> <span class="n">data</span> <span class="n">sample</span><span class="o">.</span>
-<span class="g g-Whitespace">    </span><span class="mi">213</span>         <span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">214</span><span class="s2">         neigh_dist, neigh_ind = self.kneighbors(X)</span>
-<span class="g g-Whitespace">    </span><span class="mi">215</span><span class="s2">         classes_ = self.classes_</span>
-<span class="g g-Whitespace">    </span><span class="mi">216</span><span class="s2">         _y = self._y</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\neighbors\_base.py</span> in <span class="ni">kneighbors</span><span class="nt">(self, X, n_neighbors, return_distance)</span>
-<span class="g g-Whitespace">    </span><span class="mi">750</span><span class="s2">                 kwds = self.effective_metric_params_</span>
-<span class="g g-Whitespace">    </span><span class="mi">751</span><span class="s2"> </span>
-<span class="ne">--&gt; </span><span class="mi">752</span><span class="s2">             chunked_results = list(</span>
-<span class="g g-Whitespace">    </span><span class="mi">753</span><span class="s2">                 pairwise_distances_chunked(</span>
-<span class="g g-Whitespace">    </span><span class="mi">754</span><span class="s2">                     X,</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\metrics\pairwise.py</span> in <span class="ni">pairwise_distances_chunked</span><span class="nt">(X, Y, reduce_func, metric, n_jobs, working_memory, **kwds)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1724</span><span class="s2">         if reduce_func is not None:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1725</span><span class="s2">             chunk_size = D_chunk.shape[0]</span>
-<span class="ne">-&gt; </span><span class="mi">1726</span><span class="s2">             D_chunk = reduce_func(D_chunk, sl.start)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1727</span><span class="s2">             _check_chunk_size(D_chunk, chunk_size)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1728</span><span class="s2">         yield D_chunk</span>
-
-<span class="nn">d:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\neighbors\_base.py</span> in <span class="ni">_kneighbors_reduce_func</span><span class="nt">(self, dist, start, n_neighbors, return_distance)</span>
-<span class="g g-Whitespace">    </span><span class="mi">638</span><span class="s2">         if return_distance:</span>
-<span class="g g-Whitespace">    </span><span class="mi">639</span><span class="s2">             if self.effective_metric_ == &quot;euclidean&quot;:</span>
-<span class="ne">--&gt; </span><span class="mi">640</span><span class="s2">                 result = np.sqrt(dist[sample_range, neigh_ind]), neigh_ind</span>
-<span class="g g-Whitespace">    </span><span class="mi">641</span><span class="s2">             else:</span>
-<span class="g g-Whitespace">    </span><span class="mi">642</span><span class="s2">                 result = dist[sample_range, neigh_ind], neigh_ind</span>
-
-<span class="ne">KeyboardInterrupt</span>: 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib</span>
-<span class="n">matplotlib</span><span class="o">.</span><span class="n">rc_file_defaults</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">neighbors_settings</span><span class="p">,</span> <span class="n">training_accuracy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Training accuracy&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">neighbors_settings</span><span class="p">,</span> <span class="n">test_accuracy</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Test accuracy&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Accuracy&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;n_neighbors&quot;</span><span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Guardamos los datos en un csv por conveniencia a usos mas adelante</span>
+<span class="n">resampled_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_train_res</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">resampled_df</span><span class="p">[</span><span class="s1">&#39;Cover_Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_train_res</span>
+<span class="n">resampled_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;datos_smote.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="bayesiano">
-<h2>Bayesiano<a class="headerlink" href="#bayesiano" title="Link to this heading">#</a></h2>
+<section id="adasyn-metodo-de-muestreo-sintetico-adaptativo">
+<h2>ADASYN: método de muestreo sintético adaptativo<a class="headerlink" href="#adasyn-metodo-de-muestreo-sintetico-adaptativo" title="Link to this heading">#</a></h2>
+<p>ADASYN, una extensión de la técnica SMOTE, también se utiliza para tratar conjuntos de datos desequilibrados. ADASYN se centra en las densidades locales de las clases minoritarias. Averigua las regiones en las que el desequilibrio es muy grave y aplica la estrategia para generar muestras sintéticas en ellas. Genera más muestras donde la densidad es alta y menos muestras donde la densidad es baja. Este enfoque es muy útil en situaciones en las que la distribución de clases varía en el espacio de características.
+Procedimiento de trabajo de ADASYN</p>
+<ol class="arabic simple">
+<li><p>Ratios de desequilibrio de clases: El paso inicial de ADASYN es calcular el ratio de clase minoritaria que se obtiene dividiendo el número de muestras de clase mayoritaria por el número de muestras de clase minoritaria.</p></li>
+<li><p>Hallar la distribución de densidad: Para cada instancia minoritaria, encontramos sus k vecinos más cercanos. A continuación, hallamos la distancia entre ellos utilizando métricas como la distancia Manhattan o la distancia euclidiana. Si las instancias están rodeadas por más vecinos cercanos, consideramos que la densidad es más alta; de lo contrario, la densidad se considera baja.</p></li>
+<li><p>Ratio de generación de muestras: Una vez calculados el ratio de desequilibrio de clases y la distribución de la densidad, calculamos el ratio de generación de muestras. Averigua cuántas muestras deben generarse para cada caso de clase minoritaria. Para densidades más altas e instancias desequilibradas más grandes, se generan más muestras sintéticas.</p></li>
+<li><p>Generación de muestras sintéticas: Combinando las instancias minoritarias con sus vecinos más cercanos, se generan nuevas muestras.</p></li>
+<li><p>Creación de conjuntos de datos equilibrados: Al combinar las nuevas muestras sintéticas con las instancias minoritarias originales, aumenta la frecuencia de las clases minoritarias. Esto equilibra el conjunto de datos y ayuda al modelo a aprender con mayor precisión.</p></li>
+</ol>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.naive_bayes</span> <span class="kn">import</span> <span class="n">GaussianNB</span><span class="p">,</span> <span class="n">BernoulliNB</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="kn">import</span> <span class="n">accuracy_score</span><span class="p">,</span> <span class="n">confusion_matrix</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">imblearn.over_sampling</span> <span class="kn">import</span> <span class="n">ADASYN</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">BernoulliNB</span><span class="p">()</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-
-<span class="c1"># Código a medir</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">adasyn</span> <span class="o">=</span> <span class="n">ADASYN</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">X_train_ADA</span><span class="p">,</span> <span class="n">y_train_ADA</span> <span class="o">=</span> <span class="n">adasyn</span><span class="o">.</span><span class="n">fit_resample</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_train_ADA</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU Time: 0.6875 segundos
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cover_Type
+6             227478
+3             226993
+2             226801
+4             226650
+5             226582
+7             226395
+1             226367
+dtype: int64
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="n">GaussianNB</span><span class="p">()</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-
-<span class="c1"># Código a medir</span>
-<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on training set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy on training set: 0.459
-Accuracy on test set: 0.457
-CPU Time: 2.578125 segundos
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">))</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4590638305196328
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Precisión del modelo</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Precisión: </span><span class="si">{</span><span class="n">accuracy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-
-<span class="c1"># Matriz de confusión</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-
-<span class="c1"># Reporte de clasificación</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reporte de clasificación:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Precisión: 45.69%
-Matriz de confusión:
-[[33126  1717   226     0  2237   129  5122]
- [31529  9011  3921    54 10994   327   664]
- [   19     9  5754  1187   109    43     0]
- [    0     0   101   425     0     0     0]
- [  413    33   319     0  1213    17     0]
- [  101     8  2575   317   197   291     0]
- [  671    26    17     0    30     0  3271]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           1       0.50      0.78      0.61     42557
-           2       0.83      0.16      0.27     56500
-           3       0.45      0.81      0.57      7121
-           4       0.21      0.81      0.34       526
-           5       0.08      0.61      0.14      1995
-           6       0.36      0.08      0.14      3489
-           7       0.36      0.81      0.50      4015
-
-    accuracy                           0.46    116203
-   macro avg       0.40      0.58      0.37    116203
-weighted avg       0.64      0.46      0.41    116203
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#Guardamos los datos en un csv por conveniencia a usos mas adelante</span>
+<span class="n">resampled_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">X_train_ADA</span><span class="p">,</span> <span class="n">columns</span><span class="o">=</span><span class="n">X_train</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+<span class="n">resampled_df</span><span class="p">[</span><span class="s1">&#39;Cover_Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">y_train_ADA</span>
+<span class="n">resampled_df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;datos_ada.csv&#39;</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </section>
-<section id="arbol-de-decision">
-<h2>Arbol de decision<a class="headerlink" href="#arbol-de-decision" title="Link to this heading">#</a></h2>
-<p>Instalamos el paquete graphviz para visualizar el arbol</p>
-<div class="highlight-{code notranslate"><div class="highlight"><pre><span></span>pip install graphviz
-</pre></div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.tree</span> <span class="kn">import</span> <span class="n">DecisionTreeClassifier</span><span class="p">,</span> <span class="n">export_graphviz</span><span class="p">,</span> <span class="n">plot_tree</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">12</span><span class="p">)</span>
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">tree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on training set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy on training set: 0.815
-Accuracy on test set: 0.808
-CPU Time: 4.09375 segundos
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">y_pred</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="c1"># Precisión del modelo</span>
-<span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Precisión: </span><span class="si">{</span><span class="n">accuracy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-
-<span class="c1"># Matriz de confusión</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-
-<span class="c1"># Reporte de clasificación</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reporte de clasificación:&quot;</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Precisión: 80.79%
-Matriz de confusión:
-[[33406  8751     0     0    42     0   358]
- [ 6782 49058   331     0   134   154    41]
- [    0   568  5256    50     5  1242     0]
- [    0     0    73   365     0    88     0]
- [   98  1257    16     0   622     2     0]
- [    3   976   534    19     3  1954     0]
- [  748    51     0     0     0     0  3216]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           1       0.81      0.78      0.80     42557
-           2       0.81      0.87      0.84     56500
-           3       0.85      0.74      0.79      7121
-           4       0.84      0.69      0.76       526
-           5       0.77      0.31      0.44      1995
-           6       0.57      0.56      0.56      3489
-           7       0.89      0.80      0.84      4015
-
-    accuracy                           0.81    116203
-   macro avg       0.79      0.68      0.72    116203
-weighted avg       0.81      0.81      0.81    116203
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
-<span class="n">plot_tree</span><span class="p">(</span>
-    <span class="n">tree</span><span class="p">,</span>
-    <span class="n">class_names</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span> <span class="s2">&quot;6&quot;</span><span class="p">,</span> <span class="s2">&quot;7&quot;</span><span class="p">],</span>
-    <span class="n">feature_names</span><span class="o">=</span><span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span>
-    <span class="n">filled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">rounded</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">impurity</span> <span class="o">=</span> <span class="kc">False</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/4cc1df0d0633c62516e704bf92fd735b88334b4c1029af90f44c34bb2be4a1b5.png" src="_images/4cc1df0d0633c62516e704bf92fd735b88334b4c1029af90f44c34bb2be4a1b5.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Feature importances:</span><span class="se">\n</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">tree</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Feature importances:
-[5.13764107e-01 1.00408453e-02 4.00149523e-03 4.97485194e-02
- 2.00246982e-02 1.01214979e-01 1.32085020e-02 2.49199775e-02
- 7.79182030e-03 9.43614233e-02 1.04265890e-02 2.32822142e-05
- 1.65316401e-02 3.44175425e-03 2.14531579e-02 5.11928485e-04
- 1.66267069e-04 0.00000000e+00 0.00000000e+00 1.91994906e-04
- 1.42141640e-03 1.44889314e-03 0.00000000e+00 7.36405716e-04
- 4.67859126e-05 0.00000000e+00 1.23578978e-04 1.80205763e-04
- 0.00000000e+00 0.00000000e+00 3.11314216e-03 6.59788446e-04
- 1.17712653e-02 1.13897129e-02 3.32130200e-03 5.70762080e-05
- 0.00000000e+00 4.95368327e-04 0.00000000e+00 8.61382487e-03
- 2.55492042e-04 5.25707604e-03 1.65275970e-02 2.53505559e-03
- 5.07035641e-04 1.50202969e-03 0.00000000e+00 0.00000000e+00
- 2.90268208e-03 5.02995445e-03 9.64364870e-04 6.13742744e-03
- 1.97301073e-02 3.44942987e-03]
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_feature_importances_cancer</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="n">n_features</span> <span class="o">=</span> <span class="mi">54</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">n_features</span><span class="p">),</span> <span class="n">model</span><span class="o">.</span><span class="n">feature_importances_</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">n_features</span><span class="p">),</span> <span class="n">X</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;Feature importance&quot;</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Feature&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_feature_importances_cancer</span><span class="p">(</span><span class="n">tree</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/1da7840b8b49e16fba690c7515f424f086a56a289f4ac3d283959c1525bf4df8.png" src="_images/1da7840b8b49e16fba690c7515f424f086a56a289f4ac3d283959c1525bf4df8.png" />
-</div>
-</div>
-</section>
-<section id="random-forest">
-<h2>Random Forest<a class="headerlink" href="#random-forest" title="Link to this heading">#</a></h2>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Entrenar modelo</span>
-<span class="n">rTree</span> <span class="o">=</span> <span class="n">RandomForestClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">rTree</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on training set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rTree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)))</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">rTree</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="c1"># Evaluar</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">rTree</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy on training set: 1.000
-Accuracy on test set: 0.955
-CPU Time: 108.640625 segundos
-              precision    recall  f1-score   support
-
-           1       0.96      0.94      0.95     42557
-           2       0.95      0.97      0.96     56500
-           3       0.94      0.97      0.96      7121
-           4       0.92      0.85      0.89       526
-           5       0.94      0.77      0.85      1995
-           6       0.94      0.90      0.92      3489
-           7       0.97      0.95      0.96      4015
-
-    accuracy                           0.96    116203
-   macro avg       0.95      0.91      0.93    116203
-weighted avg       0.96      0.96      0.96    116203
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_feature_importances_cancer</span><span class="p">(</span><span class="n">rTree</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/5fdcd9cbcc3c34610dc41f36d082b2ade4518ad43747001e965d7a2329301d0c.png" src="_images/5fdcd9cbcc3c34610dc41f36d082b2ade4518ad43747001e965d7a2329301d0c.png" />
-</div>
-</div>
+<section id="train-weight-balanced">
+<h2>Train weight = balanced<a class="headerlink" href="#train-weight-balanced" title="Link to this heading">#</a></h2>
+<p>Para lidiar con base de datos desbalanceados, la libreria de sklearn viene con un parametro integrado a los modelos llamado ‘train_weight’ el cual se encarga de asignar pesos a las clases en el datos. Al asignar un peso mayor a la clase minoritaria y un peso menor a la clase mayoritaria, se obliga al modelo a prestar más atención a la clase minoritaria durante el entrenamiento. El parametro puede recibir varios valores, pero nosotros usaremos el valor ‘balanced’ el cual explicaremos a continuacion como funciona</p>
+<p>train_weight = ‘balanced’: El peso_clase se ajusta automáticamente de forma inversamente proporcional a las frecuencias de clase en los datos de entrada. La fórmula utilizada es: <span class="math notranslate nohighlight">\(w_j=\frac{n\text{samples}}{n\text{classes}\cdot nj}\)</span> donde <span class="math notranslate nohighlight">\(w_j\)</span> es el peso de la clase j, nsamples es el número total de muestras, nclasses es el número de clases y <span class="math notranslate nohighlight">\(n_j\)</span> es el número de muestras de la clase j.</p>
 </section>
 </section>
 
@@ -1310,6 +661,15 @@ weighted avg       0.96      0.96      0.96    116203
         <p class="prev-next-title">Analisis exploratorio de Datos(EDA)</p>
       </div>
     </a>
+    <a class="right-next"
+       href="Modelos.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">Aplicacion modelos</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
 </div>
                 </footer>
               
@@ -1328,9 +688,7 @@ weighted avg       0.96      0.96      0.96    116203
     <ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#tecnica-de-sobremuestreo-sintetico-de-minorias-smote">Técnica de sobremuestreo sintético de minorías(SMOTE)</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#adasyn-metodo-de-muestreo-sintetico-adaptativo">ADASYN: método de muestreo sintético adaptativo</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesiano">Bayesiano</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#arbol-de-decision">Arbol de decision</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#random-forest">Random Forest</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#train-weight-balanced">Train weight = balanced</a></li>
 </ul>
   </nav></div>
 
