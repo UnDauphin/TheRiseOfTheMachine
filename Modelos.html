@@ -62,7 +62,6 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'Modelos';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Balanceo del dataset" href="Balanceo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -125,6 +124,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -180,10 +181,10 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="EDA.html">Analisis exploratorio de Datos(EDA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Balanceo.html">Balanceo del dataset</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Aplicacion modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pipelines.html">Aplicacion modelos</a></li>
 </ul>
 
     </div>
@@ -417,8 +418,15 @@ document.write(`
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> 
-<span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -426,16 +434,14 @@ document.write(`
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
-<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span> <span class="nn">time</span> 
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">import</span> <span class="nn">tensorflow</span> <span class="k">as</span> <span class="nn">tf</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;tensorflow&#39;
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">time</span> 
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">ucimlrepo</span> <span class="kn">import</span> <span class="n">fetch_ucirepo</span>
 </pre></div>
 </div>
 </div>
@@ -443,6 +449,23 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covertype</span> <span class="o">=</span> <span class="n">fetch_ucirepo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">covertype</span> <span class="o">=</span> <span class="n">fetch_ucirepo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+
+<span class="nn">File D:\Miniconda\Lib\site-packages\ucimlrepo\fetch.py:97,</span> in <span class="ni">fetch_ucirepo</span><span class="nt">(name, id)</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span> <span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">97</span>     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span> <span class="k">except</span> <span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">URLError</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="k">raise</span> <span class="n">DatasetNotFoundError</span><span class="p">(</span><span class="s1">&#39;Error reading data csv file for &quot;</span><span class="si">{}</span><span class="s1">&quot; dataset (id=</span><span class="si">{}</span><span class="s1">).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+
+<span class="ne">AttributeError</span>: module &#39;pandas&#39; has no attribute &#39;read_csv&#39;
 </pre></div>
 </div>
 </div>
@@ -1132,6 +1155,93 @@ CPU Time: 47.078125 segundos
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ImportError</span><span class="g g-Whitespace">                               </span>Traceback (most recent call last)
+<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_15348/749223250.py in &lt;module&gt;
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">71</span>     <span class="n">_distributor_init</span><span class="p">,</span>
+<span class="g g-Whitespace">     </span><span class="mi">72</span> <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">73</span> <span class="kn">from</span> <span class="nn">.base</span> <span class="kn">import</span> <span class="n">clone</span>  <span class="c1"># noqa: E402</span>
+<span class="g g-Whitespace">     </span><span class="mi">74</span> <span class="kn">from</span> <span class="nn">.utils._show_versions</span> <span class="kn">import</span> <span class="n">show_versions</span>  <span class="c1"># noqa: E402</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span> 
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\base.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">17</span> <span class="kn">from</span> <span class="nn">._config</span> <span class="kn">import</span> <span class="n">config_context</span><span class="p">,</span> <span class="n">get_config</span>
+<span class="g g-Whitespace">     </span><span class="mi">18</span> <span class="kn">from</span> <span class="nn">.exceptions</span> <span class="kn">import</span> <span class="n">InconsistentVersionWarning</span>
+<span class="ne">---&gt; </span><span class="mi">19</span> <span class="kn">from</span> <span class="nn">.utils._estimator_html_repr</span> <span class="kn">import</span> <span class="n">_HTMLDocumentationLinkMixin</span><span class="p">,</span> <span class="n">estimator_html_repr</span>
+<span class="g g-Whitespace">     </span><span class="mi">20</span> <span class="kn">from</span> <span class="nn">.utils._metadata_requests</span> <span class="kn">import</span> <span class="n">_MetadataRequester</span><span class="p">,</span> <span class="n">_routing_enabled</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span> <span class="kn">from</span> <span class="nn">.utils._param_validation</span> <span class="kn">import</span> <span class="n">validate_parameter_constraints</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\utils\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_joblib</span><span class="p">,</span> <span class="n">metadata_routing</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> <span class="kn">from</span> <span class="nn">._bunch</span> <span class="kn">import</span> <span class="n">Bunch</span>
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="kn">from</span> <span class="nn">._chunking</span> <span class="kn">import</span> <span class="n">gen_batches</span><span class="p">,</span> <span class="n">gen_even_slices</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="kn">from</span> <span class="nn">._estimator_html_repr</span> <span class="kn">import</span> <span class="n">estimator_html_repr</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> 
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\utils\_chunking.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">9</span> 
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">.._config</span> <span class="kn">import</span> <span class="n">get_config</span>
+<span class="ne">---&gt; </span><span class="mi">11</span> <span class="kn">from</span> <span class="nn">._param_validation</span> <span class="kn">import</span> <span class="n">Interval</span><span class="p">,</span> <span class="n">validate_params</span>
+<span class="g g-Whitespace">     </span><span class="mi">12</span> 
+<span class="g g-Whitespace">     </span><span class="mi">13</span> 
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\sklearn\utils\_param_validation.py in &lt;module&gt;
+<span class="g g-Whitespace">     </span><span class="mi">12</span> 
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="ne">---&gt; </span><span class="mi">14</span> <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">csr_matrix</span><span class="p">,</span> <span class="n">issparse</span>
+<span class="g g-Whitespace">     </span><span class="mi">15</span> 
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="kn">from</span> <span class="nn">.._config</span> <span class="kn">import</span> <span class="n">config_context</span><span class="p">,</span> <span class="n">get_config</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\scipy\sparse\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">    </span><span class="mi">306</span> 
+<span class="g g-Whitespace">    </span><span class="mi">307</span> <span class="c1"># For backward compatibility with v0.19.</span>
+<span class="ne">--&gt; </span><span class="mi">308</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">csgraph</span>
+<span class="g g-Whitespace">    </span><span class="mi">309</span> 
+<span class="g g-Whitespace">    </span><span class="mi">310</span> <span class="c1"># Deprecated namespaces, to be removed in v2.0.0</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\scipy\sparse\csgraph\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">    </span><span class="mi">183</span>            <span class="s1">&#39;NegativeCycleError&#39;</span><span class="p">]</span>
+<span class="g g-Whitespace">    </span><span class="mi">184</span> 
+<span class="ne">--&gt; </span><span class="mi">185</span> <span class="kn">from</span> <span class="nn">._laplacian</span> <span class="kn">import</span> <span class="n">laplacian</span>
+<span class="g g-Whitespace">    </span><span class="mi">186</span> <span class="kn">from</span> <span class="nn">._shortest_path</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">187</span>     <span class="n">shortest_path</span><span class="p">,</span> <span class="n">floyd_warshall</span><span class="p">,</span> <span class="n">dijkstra</span><span class="p">,</span> <span class="n">bellman_ford</span><span class="p">,</span> <span class="n">johnson</span><span class="p">,</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\scipy\sparse\csgraph\_laplacian.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">scipy.sparse</span> <span class="kn">import</span> <span class="n">issparse</span>
+<span class="ne">----&gt; </span><span class="mi">7</span> <span class="kn">from</span> <span class="nn">scipy.sparse.linalg</span> <span class="kn">import</span> <span class="n">LinearOperator</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">scipy.sparse._sputils</span> <span class="kn">import</span> <span class="n">convert_pydata_sparse_to_scipy</span><span class="p">,</span> <span class="n">is_pydata_spmatrix</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> 
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\scipy\sparse\linalg\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">    </span><span class="mi">138</span> 
+<span class="g g-Whitespace">    </span><span class="mi">139</span> <span class="c1"># Deprecated namespaces, to be removed in v2.0.0</span>
+<span class="ne">--&gt; </span><span class="mi">140</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">isolve</span><span class="p">,</span> <span class="n">dsolve</span><span class="p">,</span> <span class="n">interface</span><span class="p">,</span> <span class="n">eigen</span><span class="p">,</span> <span class="n">matfuncs</span>
+<span class="g g-Whitespace">    </span><span class="mi">141</span> 
+<span class="g g-Whitespace">    </span><span class="mi">142</span> <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">()</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">s</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)]</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\scipy\sparse\linalg\isolve\__init__.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1">#from info import __doc__</span>
+<span class="ne">----&gt; </span><span class="mi">4</span> <span class="kn">from</span> <span class="nn">.iterative</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">from</span> <span class="nn">.minres</span> <span class="kn">import</span> <span class="n">minres</span>
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">.lgmres</span> <span class="kn">import</span> <span class="n">lgmres</span>
+
+<span class="ne">d</span>:\Miniconda\envs\ml_venv\lib\site-packages\scipy\sparse\linalg\isolve\iterative.py in &lt;module&gt;
+<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> 
+<span class="ne">----&gt; </span><span class="mi">8</span> <span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">_iterative</span>
+<span class="g g-Whitespace">      </span><span class="mi">9</span> 
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">scipy.sparse.linalg.interface</span> <span class="kn">import</span> <span class="n">LinearOperator</span>
+
+<span class="ne">ImportError</span>: DLL load failed while importing _iterative: No se puede encontrar el módulo especificado.
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -1656,20 +1766,29 @@ weighted avg       0.70      0.72      0.70    116203
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_model_l1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;liblinear&#39;</span><span class="p">,</span> <span class="n">penalty</span> <span class="o">=</span> <span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_model_l1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;saga&#39;</span><span class="p">,</span> <span class="n">penalty</span> <span class="o">=</span> <span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">multiclass</span> <span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">)</span>
+<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
 <span class="n">best_model_l1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_sc</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+<span class="n">metricas</span><span class="p">(</span><span class="n">best_model_l1</span><span class="p">)</span>
 <span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_l1</span><span class="p">,</span> <span class="n">scaled</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Micro-averaged One-vs-Rest ROC AUC score:
-0.96
-Macro-averaged One-vs-Rest ROC AUC score:
-0.93
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="ne">C</span>:\Users\ALEJAN~1\AppData\Local\Temp/ipykernel_13172/110160045.py in &lt;module&gt;
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">best_model_l1</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">solver</span> <span class="o">=</span> <span class="s1">&#39;saga&#39;</span><span class="p">,</span> <span class="n">penalty</span> <span class="o">=</span> <span class="s1">&#39;l1&#39;</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span> <span class="n">multiclass</span> <span class="o">=</span><span class="s2">&quot;ovr&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">best_model_l1</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_sc</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="nb">print</span><span class="p">(</span><span class="n">end</span> <span class="o">-</span> <span class="n">start</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;LogisticRegression&#39; is not defined
 </pre></div>
 </div>
-<img alt="_images/c307124bcce9eb154be7dae149ff5a4abff962a3ee05980e095fdd5638003ac5.png" src="_images/c307124bcce9eb154be7dae149ff5a4abff962a3ee05980e095fdd5638003ac5.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -3610,7 +3729,14 @@ Macro-averaged One-vs-Rest ROC AUC score:
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_score_B</span> <span class="o">=</span> <span class="mi">0</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">X_t_SM</span><span class="p">,</span> <span class="n">X_valid_SM</span><span class="p">,</span> <span class="n">y_t_SM</span><span class="p">,</span> <span class="n">y_valid_SM</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">X_train_SM_sc</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">best_score_SM</span> <span class="o">=</span> <span class="mi">0</span>
 <span class="k">for</span> <span class="n">C</span> <span class="ow">in</span> <span class="p">[</span><span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">]:</span>
     <span class="n">Lsvm</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">)</span>
     <span class="n">Lsvm</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">)</span> <span class="c1"># Ajuste del modelo SVC</span>
@@ -3765,15 +3891,6 @@ Modelo terminado
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="Balanceo.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Balanceo del dataset</p>
-      </div>
-    </a>
 </div>
                 </footer>
               

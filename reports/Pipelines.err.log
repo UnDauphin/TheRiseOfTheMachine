@@ -24,7 +24,7 @@ covertype = fetch_ucirepo(id=31)
 
 [31m---------------------------------------------------------------------------[39m
 [31mAttributeError[39m                            Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[3][39m[32m, line 1[39m
+[36mCell[39m[36m [39m[32mIn[6][39m[32m, line 1[39m
 [32m----> [39m[32m1[39m covertype = [43mfetch_ucirepo[49m[43m([49m[38;5;28;43mid[39;49m[43m=[49m[32;43m31[39;49m[43m)[49m
 
 [36mFile [39m[32mD:\Miniconda\Lib\site-packages\ucimlrepo\fetch.py:97[39m, in [36mfetch_ucirepo[39m[34m(name, id)[39m
