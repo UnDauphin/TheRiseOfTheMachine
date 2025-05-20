@@ -18,22 +18,21 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import numpy as np
-import matplotlib.pyplot as plt
-import time
-import pandas as pd
-import seaborn as sns
-from ucimlrepo import fetch_ucirepo
+covertype = fetch_ucirepo(id=31)
 ------------------
 
 
 [31m---------------------------------------------------------------------------[39m
-[31mModuleNotFoundError[39m                       Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 5[39m
-[32m      3[39m [38;5;28;01mimport[39;00m [34;01mtime[39;00m
-[32m      4[39m [38;5;28;01mimport[39;00m [34;01mpandas[39;00m [38;5;28;01mas[39;00m [34;01mpd[39;00m
-[32m----> [39m[32m5[39m [38;5;28;01mimport[39;00m [34;01mseaborn[39;00m [38;5;28;01mas[39;00m [34;01msns[39;00m
-[32m      6[39m [38;5;28;01mfrom[39;00m [34;01mucimlrepo[39;00m [38;5;28;01mimport[39;00m fetch_ucirepo
+[31mAttributeError[39m                            Traceback (most recent call last)
+[36mCell[39m[36m [39m[32mIn[6][39m[32m, line 1[39m
+[32m----> [39m[32m1[39m covertype = [43mfetch_ucirepo[49m[43m([49m[38;5;28;43mid[39;49m[43m=[49m[32;43m31[39;49m[43m)[49m
 
-[31mModuleNotFoundError[39m: No module named 'seaborn'
+[36mFile [39m[32mD:\Miniconda\Lib\site-packages\ucimlrepo\fetch.py:97[39m, in [36mfetch_ucirepo[39m[34m(name, id)[39m
+[32m     95[39m df = [38;5;28;01mNone[39;00m
+[32m     96[39m [38;5;28;01mtry[39;00m:
+[32m---> [39m[32m97[39m     df = [43mpd[49m[43m.[49m[43mread_csv[49m(data_url)
+[32m     98[39m [38;5;28;01mexcept[39;00m (urllib.error.URLError, urllib.error.HTTPError):
+[32m     99[39m     [38;5;28;01mraise[39;00m DatasetNotFoundError([33m'[39m[33mError reading data csv file for [39m[33m"[39m[38;5;132;01m{}[39;00m[33m"[39m[33m dataset (id=[39m[38;5;132;01m{}[39;00m[33m).[39m[33m'[39m.format(name, [38;5;28mid[39m))
+
+[31mAttributeError[39m: module 'pandas' has no attribute 'read_csv'
 

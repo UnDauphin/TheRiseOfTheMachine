@@ -18,22 +18,23 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply_content)
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-import numpy as np
-import matplotlib.pyplot as plt
-import time
 import pandas as pd
-import seaborn as sns
-from ucimlrepo import fetch_ucirepo
+import cudf
+
+import cupy as cp
+import os
+
+cp.random.seed(0)
 ------------------
 
 
 [31m---------------------------------------------------------------------------[39m
 [31mModuleNotFoundError[39m                       Traceback (most recent call last)
-[36mCell[39m[36m [39m[32mIn[5][39m[32m, line 5[39m
-[32m      3[39m [38;5;28;01mimport[39;00m [34;01mtime[39;00m
-[32m      4[39m [38;5;28;01mimport[39;00m [34;01mpandas[39;00m [38;5;28;01mas[39;00m [34;01mpd[39;00m
-[32m----> [39m[32m5[39m [38;5;28;01mimport[39;00m [34;01mseaborn[39;00m [38;5;28;01mas[39;00m [34;01msns[39;00m
-[32m      6[39m [38;5;28;01mfrom[39;00m [34;01mucimlrepo[39;00m [38;5;28;01mimport[39;00m fetch_ucirepo
+[36mCell[39m[36m [39m[32mIn[2][39m[32m, line 2[39m
+[32m      1[39m [38;5;28;01mimport[39;00m [34;01mpandas[39;00m [38;5;28;01mas[39;00m [34;01mpd[39;00m
+[32m----> [39m[32m2[39m [38;5;28;01mimport[39;00m [34;01mcudf[39;00m
+[32m      4[39m [38;5;28;01mimport[39;00m [34;01mcupy[39;00m [38;5;28;01mas[39;00m [34;01mcp[39;00m
+[32m      5[39m [38;5;28;01mimport[39;00m [34;01mos[39;00m
 
-[31mModuleNotFoundError[39m: No module named 'seaborn'
+[31mModuleNotFoundError[39m: No module named 'cudf'
 

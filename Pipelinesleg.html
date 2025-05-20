@@ -57,10 +57,9 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'Pipelines';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Pipelinesleg';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Balanceo del dataset" href="Balanceo.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -123,6 +122,8 @@
       
       
       
+        
+      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -178,10 +179,10 @@
                 </a>
             </li>
         </ul>
-        <ul class="current nav bd-sidenav">
+        <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="EDA.html">Analisis exploratorio de Datos(EDA)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="Balanceo.html">Balanceo del dataset</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Aplicacion modelos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="Pipelines.html">Aplicacion modelos</a></li>
 
 </ul>
 
@@ -254,7 +255,7 @@
       
       
       
-      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FPipelines.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2FPipelinesleg.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -284,7 +285,7 @@
       
       
       
-      <li><a href="_sources/Pipelines.ipynb" target="_blank"
+      <li><a href="_sources/Pipelinesleg.ipynb" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -378,7 +379,6 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Aplicacion modelos</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors">K Nearest Neighbors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-logistica">Regresion Logistica</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesiano">Bayesiano</a></li>
@@ -387,10 +387,6 @@ document.write(`
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#svm">SVM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xgboost">XgBoost</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-stacking">Modelo original(stacking)</a></li>
-</ul>
-
             </nav>
         </div>
     </div>
@@ -413,7 +409,7 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May 20 00:05:21 2025       
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Tue May 20 00:05:45 2025       
 +-----------------------------------------------------------------------------------------+
 | NVIDIA-SMI 576.40                 Driver Version: 576.40         CUDA Version: 12.9     |
 |-----------------------------------------+------------------------+----------------------+
@@ -422,7 +418,7 @@ document.write(`
 |                                         |                        |               MIG M. |
 |=========================================+========================+======================|
 |   0  NVIDIA GeForce GTX 1650      WDDM  |   00000000:01:00.0 Off |                  N/A |
-| N/A   56C    P0             15W /   50W |     808MiB /   4096MiB |      3%      Default |
+| N/A   56C    P0             15W /   50W |     800MiB /   4096MiB |      1%      Default |
 |                                         |                        |                  N/A |
 +-----------------------------------------+------------------------+----------------------+
                                                                                          
@@ -521,21 +517,9 @@ WARNING: Ignoring invalid distribution ~andas (D:\Miniconda\Lib\site-packages)
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">ucimlrepo</span> <span class="kn">import</span> <span class="n">fetch_ucirepo</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span> <span class="n">line</span> <span class="mi">5</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span> <span class="nn">time</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> <span class="kn">from</span> <span class="nn">ucimlrepo</span> <span class="kn">import</span> <span class="n">fetch_ucirepo</span>
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;seaborn&#39;
 </pre></div>
 </div>
 </div>
@@ -543,6 +527,23 @@ WARNING: Ignoring invalid distribution ~andas (D:\Miniconda\Lib\site-packages)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">covertype</span> <span class="o">=</span> <span class="n">fetch_ucirepo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">6</span><span class="p">],</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">covertype</span> <span class="o">=</span> <span class="n">fetch_ucirepo</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="mi">31</span><span class="p">)</span>
+
+<span class="nn">File D:\Miniconda\Lib\site-packages\ucimlrepo\fetch.py:97,</span> in <span class="ni">fetch_ucirepo</span><span class="nt">(name, id)</span>
+<span class="g g-Whitespace">     </span><span class="mi">95</span> <span class="n">df</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="g g-Whitespace">     </span><span class="mi">96</span> <span class="k">try</span><span class="p">:</span>
+<span class="ne">---&gt; </span><span class="mi">97</span>     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">data_url</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">98</span> <span class="k">except</span> <span class="p">(</span><span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">URLError</span><span class="p">,</span> <span class="n">urllib</span><span class="o">.</span><span class="n">error</span><span class="o">.</span><span class="n">HTTPError</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">99</span>     <span class="k">raise</span> <span class="n">DatasetNotFoundError</span><span class="p">(</span><span class="s1">&#39;Error reading data csv file for &quot;</span><span class="si">{}</span><span class="s1">&quot; dataset (id=</span><span class="si">{}</span><span class="s1">).&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">id</span><span class="p">))</span>
+
+<span class="ne">AttributeError</span>: module &#39;pandas&#39; has no attribute &#39;read_csv&#39;
 </pre></div>
 </div>
 </div>
@@ -631,43 +632,6 @@ WARNING: Ignoring invalid distribution ~andas (D:\Miniconda\Lib\site-packages)
     <span class="c1"># Reporte de clasificación</span>
     <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reporte de clasificación:&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">le_metricas</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-    <span class="c1"># Precisión del modelo</span>
-    <span class="n">accuracy</span> <span class="o">=</span> <span class="n">accuracy_score</span><span class="p">(</span><span class="n">le_y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Precisión: </span><span class="si">{</span><span class="n">accuracy</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="mi">100</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%&quot;</span><span class="p">)</span>
-
-    <span class="c1"># Matriz de confusión</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matriz de confusión:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">confusion_matrix</span><span class="p">(</span><span class="n">le_y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-
-    <span class="c1"># Reporte de clasificación</span>
-    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Reporte de clasificación:&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">classification_report</span><span class="p">(</span><span class="n">le_y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">))</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
-
-<span class="k">def</span> <span class="nf">table</span><span class="p">(</span><span class="n">model</span><span class="p">):</span>
-    <span class="n">y_pred</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-    <span class="n">cfs</span> <span class="o">=</span> <span class="n">confusion_matrix</span><span class="p">(</span><span class="n">y_test</span><span class="p">,</span> <span class="n">y_pred</span><span class="p">)</span>
-    <span class="n">tabla</span> <span class="o">=</span> <span class="n">tabulate</span><span class="p">(</span>
-        <span class="n">cfs</span><span class="p">,</span>
-        <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;keys&#39;</span><span class="p">,</span>
-        <span class="n">tablefmt</span><span class="o">=</span><span class="s1">&#39;latex&#39;</span><span class="p">,</span>
-        <span class="n">showindex</span><span class="o">=</span><span class="kc">False</span>
-    <span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">tabla</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1488,149 +1452,13 @@ Macro-averaged One-vs-Rest ROC AUC score:
 <p><strong>Mejor modelo</strong></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">12</span><span class="p">,</span> <span class="n">algorithm</span> <span class="o">=</span> <span class="s2">&quot;kd_tree&quot;</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">algorithm</span> <span class="o">=</span> <span class="s2">&quot;kd_tree&quot;</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
 <span class="n">knn</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_SM</span><span class="p">,</span> <span class="n">y_train_SM</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
 <span class="n">metricas</span><span class="p">(</span><span class="n">knn</span><span class="p">)</span>
 <span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">knn</span><span class="p">)</span>
+<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Precisión: 94.75%
-Matriz de confusión:
-[[41167   814     6     0   139    16   415]
- [ 2664 52224   349     2   824   353    84]
- [    0     6  6883    64    22   146     0]
- [    0     0    24   482     0    20     0]
- [    0     9     5     0  1975     5     1]
- [    0     5    67    41     7  3369     0]
- [    8     0     0     0     0     0  4007]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           1       0.94      0.97      0.95     42557
-           2       0.98      0.92      0.95     56500
-           3       0.94      0.97      0.95      7121
-           4       0.82      0.92      0.86       526
-           5       0.67      0.99      0.80      1995
-           6       0.86      0.97      0.91      3489
-           7       0.89      1.00      0.94      4015
-
-    accuracy                           0.95    116203
-   macro avg       0.87      0.96      0.91    116203
-weighted avg       0.95      0.95      0.95    116203
-
-Micro-averaged One-vs-Rest ROC AUC score:
-1.00
-Macro-averaged One-vs-Rest ROC AUC score:
-0.99
-CPU Time: 32.057146955 segundos
-</pre></div>
-</div>
-<img alt="_images/93243b309f0728eba629207bfdd5fa7fd36cd55126cdec11b08e1e095130c860.png" src="_images/93243b309f0728eba629207bfdd5fa7fd36cd55126cdec11b08e1e095130c860.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">table</span><span class="p">(</span><span class="n">knn</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>\begin{tabular}{rrrrrrr}
-\hline
-     0 &amp;     1 &amp;    2 &amp;   3 &amp;    4 &amp;    5 &amp;    6 \\
-\hline
- 41167 &amp;   814 &amp;    6 &amp;   0 &amp;  139 &amp;   16 &amp;  415 \\
-  2664 &amp; 52224 &amp;  349 &amp;   2 &amp;  824 &amp;  353 &amp;   84 \\
-     0 &amp;     6 &amp; 6883 &amp;  64 &amp;   22 &amp;  146 &amp;    0 \\
-     0 &amp;     0 &amp;   24 &amp; 482 &amp;    0 &amp;   20 &amp;    0 \\
-     0 &amp;     9 &amp;    5 &amp;   0 &amp; 1975 &amp;    5 &amp;    1 \\
-     0 &amp;     5 &amp;   67 &amp;  41 &amp;    7 &amp; 3369 &amp;    0 \\
-     8 &amp;     0 &amp;    0 &amp;   0 &amp;    0 &amp;    0 &amp; 4007 \\
-\hline
-\end{tabular}
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn2</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">knn2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="n">fittime</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time for fitting: </span><span class="si">{</span><span class="n">fittime</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time for predicting: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total CPU time: </span><span class="si">{</span><span class="n">fittime</span><span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU Time for fitting: 0.27234913000000205 segundos
-CPU Time for predicting: 2529.289554806 segundos
-Total CPU time: 2529.561903936
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn2</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span><span class="n">algorithm</span> <span class="o">=</span> <span class="s1">&#39;kd_tree&#39;</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">knn2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="n">fittime</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time for fitting: </span><span class="si">{</span><span class="n">fittime</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time for predicting: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total CPU time: </span><span class="si">{</span><span class="n">fittime</span><span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU Time for fitting: 9.948910593000164 segundos
-CPU Time for predicting: 23.024543899000037 segundos
-Total CPU time: 32.9734544920002
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">knn2</span> <span class="o">=</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span><span class="n">algorithm</span> <span class="o">=</span> <span class="s1">&#39;ball_tree&#39;</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">knn2</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="n">fittime</span> <span class="o">=</span> <span class="n">end</span> <span class="o">-</span> <span class="n">start</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time for fitting: </span><span class="si">{</span><span class="n">fittime</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="n">start</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Inicia el contador de CPU time</span>
-<span class="n">y_pred</span> <span class="o">=</span> <span class="n">knn2</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">)</span>
-<span class="n">end</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">process_time</span><span class="p">()</span>  <span class="c1"># Finaliza el contador de CPU time</span>
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;CPU Time for predicting: </span><span class="si">{</span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2"> segundos&quot;</span><span class="p">)</span>
-
-<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Total CPU time: </span><span class="si">{</span><span class="n">fittime</span><span class="w">  </span><span class="o">+</span><span class="w"> </span><span class="n">end</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>CPU Time for fitting: 7.3719191089999185 segundos
-CPU Time for predicting: 222.83491024100022 segundos
-Total CPU time: 230.20682935000013
 </pre></div>
 </div>
 </div>
@@ -3242,6 +3070,7 @@ Macro-averaged One-vs-Rest ROC AUC score:
 <img alt="_images/573883a5f13248779895c3362e900c84b31c4ad7ceac2b57977c4875262ecc74.png" src="_images/573883a5f13248779895c3362e900c84b31c4ad7ceac2b57977c4875262ecc74.png" />
 </div>
 </div>
+<p>Ahora hagamos la validacion cruzada anidada usando class = ‘balanced’</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pipeline_B</span><span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
@@ -3314,6 +3143,41 @@ Macro-averaged One-vs-Rest ROC AUC score:
 </div>
 </div>
 <p>Ahora comparamos los mejores modelos de los grid search en cada metodo de balanceo</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_model</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_model_B</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_model_SM</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_model_ADA</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+
+<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_B</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_SM</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_ADA</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accuracy on test set: 0.906
+Accuracy on test set: 0.877
+Accuracy on test set: 0.913
+Accuracy on test set: 0.888
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-66-d6594d80510d&gt;</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Accuracy on test set: </span><span class="si">{:.3f}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">best_model_ADA</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">X_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">)))</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">AUC_curvas</span><span class="p">(</span><span class="n">best_model</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">AUC_curvas</span><span class="p">(</span><span class="n">best_model_B</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="n">AUC_curvas</span><span class="p">(</span><span class="n">best_model_SM</span><span class="p">,</span> <span class="n">draw</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+
+<span class="ne">NameError</span>: name &#39;AUC_curvas&#39; is not defined
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tree</span> <span class="o">=</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">criterion</span><span class="o">=</span><span class="s2">&quot;entropy&quot;</span><span class="p">,</span> <span class="n">max_depth</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">max_features</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span>
@@ -3933,7 +3797,7 @@ Modelo terminado
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">le</span> <span class="o">=</span> <span class="n">LabelEncoder</span><span class="p">()</span>
 <span class="n">le_y_train</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>
 <span class="n">le_y_test</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
-<span class="n">le_y_train_SM</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_train_SM</span><span class="p">)</span>
+<span class="n">le_y_train_SM</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">y_train_SM</span><span class="p">)</span>
 <span class="n">le_y_train_ADA</span> <span class="o">=</span> <span class="n">le</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">y_train_ADA</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -3976,329 +3840,129 @@ Modelo terminado
 <span class="c1"># Evaluar el mejor modelo</span>
 <span class="n">best_model</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
 
-<span class="n">le_metricas</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
+<span class="n">metricas</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
 <span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 18 candidates, totalling 90 fits
-Mejores hiperparámetros: {&#39;xgb__learning_rate&#39;: 0.3, &#39;xgb__max_depth&#39;: 8, &#39;xgb__n_estimators&#39;: 100}
-Precisión: 92.09%
-Matriz de confusión:
-[[38129  4273     0     0    20     4   131]
- [ 2996 53193    85     0   123    83    20]
- [    0   123  6756    23     4   215     0]
- [    0     0    54   453     0    19     0]
- [   37   438    22     0  1488    10     0]
- [    1   117   215    16     3  3137     0]
- [  148    15     0     0     1     0  3851]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           0       0.92      0.90      0.91     42557
-           1       0.91      0.94      0.93     56500
-           2       0.95      0.95      0.95      7121
-           3       0.92      0.86      0.89       526
-           4       0.91      0.75      0.82      1995
-           5       0.90      0.90      0.90      3489
-           6       0.96      0.96      0.96      4015
-
-    accuracy                           0.92    116203
-   macro avg       0.93      0.89      0.91    116203
-weighted avg       0.92      0.92      0.92    116203
-
-Micro-averaged One-vs-Rest ROC AUC score:
-1.00
-Macro-averaged One-vs-Rest ROC AUC score:
-0.99
 </pre></div>
 </div>
-<img alt="_images/4eea6678389ff635eb3a7781140dd2d6b0b3ac285525fd93ae17a9c02a84d339.png" src="_images/4eea6678389ff635eb3a7781140dd2d6b0b3ac285525fd93ae17a9c02a84d339.png" />
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">KeyboardInterrupt</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="nn">&lt;ipython-input-52-1e90affc5d83&gt;</span> in <span class="ni">&lt;cell line: 0&gt;</span><span class="nt">()</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">le_y_train</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> 
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="c1"># Mejores hiperparámetros</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejores hiperparámetros:&quot;</span><span class="p">,</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/sklearn/base.py</span> in <span class="ni">wrapper</span><span class="nt">(estimator, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1387</span>                 <span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1388</span>             <span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1389</span>                 <span class="k">return</span> <span class="n">fit_method</span><span class="p">(</span><span class="n">estimator</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1390</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1391</span>         <span class="k">return</span> <span class="n">wrapper</span>
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/sklearn/model_selection/_search.py</span> in <span class="ni">fit</span><span class="nt">(self, X, y, **params)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1022</span>                 <span class="k">return</span> <span class="n">results</span>
+<span class="g g-Whitespace">   </span><span class="mi">1023</span> 
+<span class="ne">-&gt; </span><span class="mi">1024</span>             <span class="bp">self</span><span class="o">.</span><span class="n">_run_search</span><span class="p">(</span><span class="n">evaluate_candidates</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1025</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1026</span>             <span class="c1"># multimetric is determined here because in the case of a callable</span>
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/sklearn/model_selection/_search.py</span> in <span class="ni">_run_search</span><span class="nt">(self, evaluate_candidates)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1569</span>     <span class="k">def</span> <span class="nf">_run_search</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">evaluate_candidates</span><span class="p">):</span>
+<span class="g g-Whitespace">   </span><span class="mi">1570</span><span class="w">         </span><span class="sd">&quot;&quot;&quot;Search all candidates in param_grid&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1571</span>         <span class="n">evaluate_candidates</span><span class="p">(</span><span class="n">ParameterGrid</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">param_grid</span><span class="p">))</span>
+<span class="g g-Whitespace">   </span><span class="mi">1572</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1573</span> 
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/sklearn/model_selection/_search.py</span> in <span class="ni">evaluate_candidates</span><span class="nt">(candidate_params, cv, more_results)</span>
+<span class="g g-Whitespace">    </span><span class="mi">968</span>                     <span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">969</span> 
+<span class="ne">--&gt; </span><span class="mi">970</span>                 <span class="n">out</span> <span class="o">=</span> <span class="n">parallel</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">971</span>                     <span class="n">delayed</span><span class="p">(</span><span class="n">_fit_and_score</span><span class="p">)(</span>
+<span class="g g-Whitespace">    </span><span class="mi">972</span>                         <span class="n">clone</span><span class="p">(</span><span class="n">base_estimator</span><span class="p">),</span>
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/sklearn/utils/parallel.py</span> in <span class="ni">__call__</span><span class="nt">(self, iterable)</span>
+<span class="g g-Whitespace">     </span><span class="mi">75</span>             <span class="k">for</span> <span class="n">delayed_func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span> <span class="ow">in</span> <span class="n">iterable</span>
+<span class="g g-Whitespace">     </span><span class="mi">76</span>         <span class="p">)</span>
+<span class="ne">---&gt; </span><span class="mi">77</span>         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__call__</span><span class="p">(</span><span class="n">iterable_with_config</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">78</span> 
+<span class="g g-Whitespace">     </span><span class="mi">79</span> 
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/joblib/parallel.py</span> in <span class="ni">__call__</span><span class="nt">(self, iterable)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2069</span>         <span class="nb">next</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2070</span> 
+<span class="ne">-&gt; </span><span class="mi">2071</span>         <span class="k">return</span> <span class="n">output</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">return_generator</span> <span class="k">else</span> <span class="nb">list</span><span class="p">(</span><span class="n">output</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2072</span> 
+<span class="g g-Whitespace">   </span><span class="mi">2073</span>     <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/joblib/parallel.py</span> in <span class="ni">_get_outputs</span><span class="nt">(self, iterator, pre_dispatch)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1679</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1680</span>             <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_backend</span><span class="o">.</span><span class="n">retrieval_context</span><span class="p">():</span>
+<span class="ne">-&gt; </span><span class="mi">1681</span>                 <span class="k">yield from</span> <span class="bp">self</span><span class="o">.</span><span class="n">_retrieve</span><span class="p">()</span>
+<span class="g g-Whitespace">   </span><span class="mi">1682</span> 
+<span class="g g-Whitespace">   </span><span class="mi">1683</span>         <span class="k">except</span> <span class="ne">GeneratorExit</span><span class="p">:</span>
+
+<span class="nn">/usr/local/lib/python3.11/dist-packages/joblib/parallel.py</span> in <span class="ni">_retrieve</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1797</span>                     <span class="bp">self</span><span class="o">.</span><span class="n">_jobs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">get_status</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">timeout</span><span class="p">)</span> <span class="o">==</span> <span class="n">TASK_PENDING</span>
+<span class="g g-Whitespace">   </span><span class="mi">1798</span>                 <span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">1799</span>                     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1800</span>                     <span class="k">continue</span>
+<span class="g g-Whitespace">   </span><span class="mi">1801</span> 
+
+<span class="ne">KeyboardInterrupt</span>: 
+</pre></div>
+</div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_SM</span><span class="p">,</span> <span class="n">le_y_train_SM</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">le_y_train</span><span class="p">)</span>
 
-<span class="c1"># Mejores hiperparámetros</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejores hiperparámetros:&quot;</span><span class="p">,</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
-
-<span class="c1"># Evaluar el mejor modelo</span>
-<span class="n">best_model_SM</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
-
-<span class="n">le_metricas</span><span class="p">(</span><span class="n">best_model_SM</span><span class="p">)</span>
-<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_SM</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 18 candidates, totalling 90 fits
-Mejores hiperparámetros: {&#39;xgb__learning_rate&#39;: 0.3, &#39;xgb__max_depth&#39;: 8, &#39;xgb__n_estimators&#39;: 100}
-Precisión: 89.90%
-Matriz de confusión:
-[[38086  3886     6     0   155    12   412]
- [ 5041 49997   251     0   860   297    54]
- [    0    30  6730    37    22   302     0]
- [    0     0    36   476     0    14     0]
- [    2    81    13     0  1889    10     0]
- [    0    15   114    21     7  3332     0]
- [   53     4     0     0     1     0  3957]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           0       0.88      0.89      0.89     42557
-           1       0.93      0.88      0.90     56500
-           2       0.94      0.95      0.94      7121
-           3       0.89      0.90      0.90       526
-           4       0.64      0.95      0.77      1995
-           5       0.84      0.96      0.89      3489
-           6       0.89      0.99      0.94      4015
-
-    accuracy                           0.90    116203
-   macro avg       0.86      0.93      0.89    116203
-weighted avg       0.90      0.90      0.90    116203
-
-Micro-averaged One-vs-Rest ROC AUC score:
-0.99
-Macro-averaged One-vs-Rest ROC AUC score:
-0.99
-</pre></div>
-</div>
-<img alt="_images/d6d60319740025a373f3ea15fee32ceffe5302e11aaa57281125cb21e8a1228c.png" src="_images/d6d60319740025a373f3ea15fee32ceffe5302e11aaa57281125cb21e8a1228c.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train_ADA</span><span class="p">,</span> <span class="n">le_y_train_ADA</span><span class="p">)</span>
-
-<span class="c1"># Mejores hiperparámetros</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejores hiperparámetros:&quot;</span><span class="p">,</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
-
-<span class="c1"># Evaluar el mejor modelo</span>
-<span class="n">best_model_ADA</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
-
-<span class="n">le_metricas</span><span class="p">(</span><span class="n">best_model_ADA</span><span class="p">)</span>
-<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_ADA</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 18 candidates, totalling 90 fits
-Mejores hiperparámetros: {&#39;xgb__learning_rate&#39;: 0.3, &#39;xgb__max_depth&#39;: 8, &#39;xgb__n_estimators&#39;: 100}
-Precisión: 88.84%
-Matriz de confusión:
-[[38603  3187     3     0   149    11   604]
- [ 6206 48387   340     0  1120   342   105]
- [    0    21  6697    43    23   337     0]
- [    0     0    39   473     0    14     0]
- [    7    57    12     0  1910     9     0]
- [    3    26   245    26     5  3184     0]
- [   33     2     0     0     1     0  3979]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           0       0.86      0.91      0.88     42557
-           1       0.94      0.86      0.89     56500
-           2       0.91      0.94      0.93      7121
-           3       0.87      0.90      0.89       526
-           4       0.60      0.96      0.73      1995
-           5       0.82      0.91      0.86      3489
-           6       0.85      0.99      0.91      4015
-
-    accuracy                           0.89    116203
-   macro avg       0.83      0.92      0.87    116203
-weighted avg       0.89      0.89      0.89    116203
-
-Micro-averaged One-vs-Rest ROC AUC score:
-0.99
-Macro-averaged One-vs-Rest ROC AUC score:
-0.99
-</pre></div>
-</div>
-<img alt="_images/0a86cf6a7bc73633f309a5211e02c7bab7c8273a19dad8bc2a9d98e4aaed4a45.png" src="_images/0a86cf6a7bc73633f309a5211e02c7bab7c8273a19dad8bc2a9d98e4aaed4a45.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgb</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">tree_method</span><span class="o">=</span><span class="s1">&#39;gpu_hist&#39;</span><span class="p">,</span> <span class="n">use_label_encoder</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbosity</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">train_weight</span> <span class="o">=</span> <span class="s1">&#39;balanced&#39;</span><span class="p">)</span>
-
-<span class="n">pipeline</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>  <span class="c1"># Escalado de características</span>
-    <span class="p">(</span><span class="s1">&#39;xgb&#39;</span><span class="p">,</span> <span class="n">xgb</span><span class="p">),</span>  <span class="c1"># Selección de características</span>
-<span class="p">])</span>
-
-<span class="n">param_grid</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s1">&#39;xgb__n_estimators&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
-    <span class="s1">&#39;xgb__max_depth&#39;</span><span class="p">:[</span><span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">],</span>
-    <span class="s1">&#39;xgb__learning_rate&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]</span>
-<span class="p">}</span>
-
-<span class="n">grid_search</span> <span class="o">=</span> <span class="n">GridSearchCV</span><span class="p">(</span>
-    <span class="n">estimator</span><span class="o">=</span><span class="n">pipeline</span><span class="p">,</span>
-    <span class="n">param_grid</span><span class="o">=</span><span class="n">param_grid</span><span class="p">,</span>
-    <span class="n">scoring</span><span class="o">=</span><span class="s1">&#39;roc_auc_ovr&#39;</span><span class="p">,</span>
-    <span class="n">cv</span><span class="o">=</span><span class="n">StratifiedKFold</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
-    <span class="n">n_jobs</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
-    <span class="n">verbose</span><span class="o">=</span><span class="mi">2</span>
-<span class="p">)</span>
-
-<span class="n">grid_search</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">le_y_train</span><span class="p">)</span>
-
-<span class="c1"># Mejores hiperparámetros</span>
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mejores hiperparámetros:&quot;</span><span class="p">,</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_params_</span><span class="p">)</span>
-
-<span class="c1"># Evaluar el mejor modelo</span>
-<span class="n">best_model_B</span> <span class="o">=</span> <span class="n">grid_search</span><span class="o">.</span><span class="n">best_estimator_</span>
-
-<span class="n">le_metricas</span><span class="p">(</span><span class="n">best_model_B</span><span class="p">)</span>
-<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">best_model_B</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Fitting 5 folds for each of 18 candidates, totalling 90 fits
-Mejores hiperparámetros: {&#39;xgb__learning_rate&#39;: 0.3, &#39;xgb__max_depth&#39;: 8, &#39;xgb__n_estimators&#39;: 100}
-Precisión: 92.09%
-Matriz de confusión:
-[[38129  4273     0     0    20     4   131]
- [ 2996 53193    85     0   123    83    20]
- [    0   123  6756    23     4   215     0]
- [    0     0    54   453     0    19     0]
- [   37   438    22     0  1488    10     0]
- [    1   117   215    16     3  3137     0]
- [  148    15     0     0     1     0  3851]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           0       0.92      0.90      0.91     42557
-           1       0.91      0.94      0.93     56500
-           2       0.95      0.95      0.95      7121
-           3       0.92      0.86      0.89       526
-           4       0.91      0.75      0.82      1995
-           5       0.90      0.90      0.90      3489
-           6       0.96      0.96      0.96      4015
-
-    accuracy                           0.92    116203
-   macro avg       0.93      0.89      0.91    116203
-weighted avg       0.92      0.92      0.92    116203
-
-Micro-averaged One-vs-Rest ROC AUC score:
-1.00
-Macro-averaged One-vs-Rest ROC AUC score:
-0.99
-</pre></div>
-</div>
-<img alt="_images/4eea6678389ff635eb3a7781140dd2d6b0b3ac285525fd93ae17a9c02a84d339.png" src="_images/4eea6678389ff635eb3a7781140dd2d6b0b3ac285525fd93ae17a9c02a84d339.png" />
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">xgb</span> <span class="o">=</span> <span class="n">XGBClassifier</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="mi">42</span><span class="p">,</span> <span class="n">tree_method</span><span class="o">=</span><span class="s1">&#39;gpu_hist&#39;</span><span class="p">,</span> <span class="n">use_label_encoder</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">train_weight</span> <span class="o">=</span> <span class="s1">&#39;balanced&#39;</span><span class="p">,</span>
-                    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.3</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">8</span><span class="p">,</span> <span class="n">n_estimators</span> <span class="o">=</span> <span class="mi">100</span><span class="p">)</span>
-<span class="n">xgb</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">le_y_train</span><span class="p">)</span>
-
-<span class="n">le_metricas</span><span class="p">(</span><span class="n">xgb</span><span class="p">)</span>
+<span class="n">metricas</span><span class="p">(</span><span class="n">xgb</span><span class="p">)</span>
 <span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">xgb</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Precisión: 92.09%
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Precisión: 86.71%
 Matriz de confusión:
-[[38129  4273     0     0    20     4   131]
- [ 2996 53193    85     0   123    83    20]
- [    0   123  6756    23     4   215     0]
- [    0     0    54   453     0    19     0]
- [   37   438    22     0  1488    10     0]
- [    1   117   215    16     3  3137     0]
- [  148    15     0     0     1     0  3851]]
+[[35667  6621     2     0    15     6   246]
+ [ 5426 50584   202     0   111   152    25]
+ [    2   266  6500    32     1   320     0]
+ [    0     0    54   454     0    18     0]
+ [   26   803    31     0  1124    11     0]
+ [    1   213   459    16     1  2799     0]
+ [  363    18     0     0     0     0  3634]]
 Reporte de clasificación:
               precision    recall  f1-score   support
 
-           0       0.92      0.90      0.91     42557
-           1       0.91      0.94      0.93     56500
-           2       0.95      0.95      0.95      7121
-           3       0.92      0.86      0.89       526
-           4       0.91      0.75      0.82      1995
-           5       0.90      0.90      0.90      3489
-           6       0.96      0.96      0.96      4015
+           0       0.86      0.84      0.85     42557
+           1       0.86      0.90      0.88     56500
+           2       0.90      0.91      0.90      7121
+           3       0.90      0.86      0.88       526
+           4       0.90      0.56      0.69      1995
+           5       0.85      0.80      0.82      3489
+           6       0.93      0.91      0.92      4015
 
-    accuracy                           0.92    116203
-   macro avg       0.93      0.89      0.91    116203
-weighted avg       0.92      0.92      0.92    116203
+    accuracy                           0.87    116203
+   macro avg       0.89      0.83      0.85    116203
+weighted avg       0.87      0.87      0.87    116203
 
 Micro-averaged One-vs-Rest ROC AUC score:
-1.00
+0.99
 Macro-averaged One-vs-Rest ROC AUC score:
 0.99
 </pre></div>
 </div>
-<img alt="_images/4eea6678389ff635eb3a7781140dd2d6b0b3ac285525fd93ae17a9c02a84d339.png" src="_images/4eea6678389ff635eb3a7781140dd2d6b0b3ac285525fd93ae17a9c02a84d339.png" />
+<img alt="_images/b34d28073e8a445dba02d42e18a41c790c6e3c8555f6ee28b110f4216daf4523.png" src="_images/b34d28073e8a445dba02d42e18a41c790c6e3c8555f6ee28b110f4216daf4523.png" />
 </div>
 </div>
 </section>
-</section>
-<section class="tex2jax_ignore mathjax_ignore" id="modelo-original-stacking">
-<h1>Modelo original(stacking)<a class="headerlink" href="#modelo-original-stacking" title="Link to this heading">#</a></h1>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">sklearn.ensemble</span> <span class="kn">import</span> <span class="n">StackingClassifier</span>
-
-<span class="c1"># Definir modelos base y meta-modelo</span>
-<span class="n">modelos_base</span> <span class="o">=</span> <span class="p">[(</span><span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="n">DecisionTreeClassifier</span><span class="p">(</span><span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">max_depth</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span> <span class="n">criterion</span> <span class="o">=</span> <span class="s1">&#39;entropy&#39;</span><span class="p">)),</span>
-                <span class="p">(</span><span class="s1">&#39;knn&#39;</span><span class="p">,</span> <span class="n">KNeighborsClassifier</span><span class="p">(</span><span class="n">algorithm</span> <span class="o">=</span> <span class="s2">&quot;kd_tree&quot;</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n_neighbors</span> <span class="o">=</span> <span class="mi">11</span><span class="p">))]</span>
-
-<span class="n">meta_modelo</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([</span>
-    <span class="p">(</span><span class="s1">&#39;scaler&#39;</span><span class="p">,</span> <span class="n">StandardScaler</span><span class="p">()),</span>
-    <span class="p">(</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">penalty</span><span class="o">=</span><span class="s1">&#39;l2&#39;</span><span class="p">,</span> <span class="n">solver</span><span class="o">=</span><span class="s1">&#39;lbfgs&#39;</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span> <span class="n">n_jobs</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">multi_class</span> <span class="o">=</span> <span class="s2">&quot;ovr&quot;</span><span class="p">,</span> <span class="n">random_state</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span> <span class="n">class_weight</span> <span class="o">=</span> <span class="s1">&#39;balanced&#39;</span><span class="p">,</span> <span class="n">C</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">))</span>
-<span class="p">])</span>
-
-
-<span class="n">stacking_model</span> <span class="o">=</span> <span class="n">StackingClassifier</span><span class="p">(</span><span class="n">estimators</span><span class="o">=</span><span class="n">modelos_base</span><span class="p">,</span> <span class="n">final_estimator</span><span class="o">=</span><span class="n">meta_modelo</span><span class="p">)</span>
-
-<span class="c1"># Entrenar y evaluar</span>
-<span class="n">stacking_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">)</span>
-
-<span class="n">metricas</span><span class="p">(</span><span class="n">stacking_model</span><span class="p">)</span>
-<span class="n">LAUC_curvas</span><span class="p">(</span><span class="n">stacking_model</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Precisión: 96.12%
-Matriz de confusión:
-[[41026  1219     2     0    72     6   232]
- [ 1527 54180   124     1   459   164    45]
- [    1    40  6779    72    24   205     0]
- [    0     0    25   478     0    23     0]
- [    6    55    13     0  1912     9     0]
- [    3    23    82    25    11  3345     0]
- [   37     7     0     0     1     0  3970]]
-Reporte de clasificación:
-              precision    recall  f1-score   support
-
-           1       0.96      0.96      0.96     42557
-           2       0.98      0.96      0.97     56500
-           3       0.96      0.95      0.96      7121
-           4       0.83      0.91      0.87       526
-           5       0.77      0.96      0.85      1995
-           6       0.89      0.96      0.92      3489
-           7       0.93      0.99      0.96      4015
-
-    accuracy                           0.96    116203
-   macro avg       0.90      0.96      0.93    116203
-weighted avg       0.96      0.96      0.96    116203
-
-Micro-averaged One-vs-Rest ROC AUC score:
-1.00
-Macro-averaged One-vs-Rest ROC AUC score:
-1.00
-</pre></div>
-</div>
-<img alt="_images/0a4259ecfb82faf1584d73054c595252322d6b8365aca38abcdfc1fa59f49a74.png" src="_images/0a4259ecfb82faf1584d73054c595252322d6b8365aca38abcdfc1fa59f49a74.png" />
-</div>
-</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -4331,15 +3995,6 @@ Macro-averaged One-vs-Rest ROC AUC score:
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
-    <a class="left-prev"
-       href="Balanceo.html"
-       title="previous page">
-      <i class="fa-solid fa-angle-left"></i>
-      <div class="prev-next-info">
-        <p class="prev-next-subtitle">previous</p>
-        <p class="prev-next-title">Balanceo del dataset</p>
-      </div>
-    </a>
 </div>
                 </footer>
               
@@ -4356,7 +4011,6 @@ Macro-averaged One-vs-Rest ROC AUC score:
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Aplicacion modelos</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#k-nearest-neighbors">K Nearest Neighbors</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#regresion-logistica">Regresion Logistica</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#bayesiano">Bayesiano</a></li>
@@ -4365,10 +4019,6 @@ Macro-averaged One-vs-Rest ROC AUC score:
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#svm">SVM</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#xgboost">XgBoost</a></li>
 </ul>
-</li>
-<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#modelo-original-stacking">Modelo original(stacking)</a></li>
-</ul>
-
   </nav></div>
 
 </div></div>
